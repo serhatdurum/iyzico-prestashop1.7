@@ -8,7 +8,7 @@
         {if ($form_class == 'popup')}
         <div id="iyzipay-checkout-form"  class="popup">{$response nofilter}</div>  
         {else}
-        <div id="iyzipay-checkout-form" class="responsive" > {literal}{$response}{/literal}</div>  
+        <div id="iyzipay-checkout-form" class="responsive" >{$response nofilter}</div>  
         {/if}
         {/if}
 		    <p class="alert alert-warning" id="terms-error">{$error_terms}</p>
