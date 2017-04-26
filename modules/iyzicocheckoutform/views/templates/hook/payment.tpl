@@ -27,6 +27,9 @@ $(document).ready(function(){
         if(this.checked){
             $('#iyzipay-checkout-form').show();
 			  $('#terms-error').hide();
+			  if ($('#iyzipay-checkout-form').css('display') == 'block') {
+	  $("button[type=submit]").hide();
+}
         }else{
             $('#iyzipay-checkout-form').hide();
 			  $('#terms-error').show();

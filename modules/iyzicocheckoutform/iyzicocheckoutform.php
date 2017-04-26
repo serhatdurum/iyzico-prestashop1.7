@@ -42,7 +42,7 @@ class Iyzicocheckoutform extends PaymentModule {
     }
 
     public function install() {
-        if (!parent::install() || !$this->registerHook('payment') || !$this->registerHook('displayAdminOrder') || !$this->registerHook('displayPaymentEU') || !$this->registerHook('paymentReturn'))
+        if (!parent::install() || !$this->registerHook('paymentOptions') || !$this->registerHook('displayAdminOrder') || !$this->registerHook('displayPaymentEU') || !$this->registerHook('paymentReturn'))
             return false;
 
         if (!Db::getInstance()->Execute('CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'iyzico_order_form` (
@@ -279,7 +279,7 @@ class Iyzicocheckoutform extends PaymentModule {
             $options = new \Iyzipay\Options();
             $options->setApiKey(Configuration::get('IYZICO_FORM_LIVE_API_ID'));
             $options->setSecretKey(Configuration::get('IYZICO_FORM_LIVE_SECRET'));
-            $options->setBaseUrl("https://sandbox-api.iyzipay.com");
+            $options->setBaseUrl("https://api.iyzipay.com");
             $form_class = Configuration::get('IYZICO_FORM_CLASS');
 
             $locale = ($iso_code == "tr") ? Iyzipay\Model\Locale::TR : Iyzipay\Model\Locale::EN;
@@ -591,7 +591,6 @@ class Iyzicocheckoutform extends PaymentModule {
                 $logo = Media::getMediaPath(_PS_MODULE_DIR_ . $this->name . '/logo.png');
                 $newOption = new PaymentOption();
                 $newOption->setCallToActionText($this->trans('Kredi Kartı İle Öde', array(), 'Modules.Iyzicocheckoutform'))
-                        ->setAction($this->context->link->getModuleLink($this->name, 'payment', array(), false))
                         ->setAdditionalInformation($this->fetch('module:iyzicocheckoutform/views/templates/hook/payment.tpl'));
                 $newOption->setAction($this->context->link->getModuleLink($this->name, 'payment', array(), true))->setLogo($logo);
                 $payment_options = [
