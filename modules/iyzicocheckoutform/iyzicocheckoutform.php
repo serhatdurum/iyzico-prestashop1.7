@@ -21,6 +21,7 @@ class Iyzicocheckoutform extends PaymentModule {
     protected $hooks = array(
         'payment',
         'backOfficeHeader',
+        'paymentOptions',
         'displayAdminOrder'
     );
 
@@ -592,7 +593,9 @@ class Iyzicocheckoutform extends PaymentModule {
                 $newOption = new PaymentOption();
                 $newOption->setCallToActionText($this->trans('Kredi Kartı İle Öde', array(), 'Modules.Iyzicocheckoutform'))
                         ->setAdditionalInformation($this->fetch('module:iyzicocheckoutform/views/templates/hook/payment.tpl'));
+
                 $newOption->setAction($this->context->link->getModuleLink($this->name, 'payment', array(), true))->setLogo($logo);
+                $newOption->setModuleName('iyzicocheckoutform', array(), 'Modules.Iyzicocheckoutform');
                 $payment_options = [
                     $newOption,
                 ];
