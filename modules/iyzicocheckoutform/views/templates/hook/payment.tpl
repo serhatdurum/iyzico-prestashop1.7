@@ -23,22 +23,19 @@
     $(document).ready(function () {
         $('#iyzipay-checkout-form').hide();
         $("input[name='payment-option']").click(function () {
-            if ($('#iyzipay-checkout-form').css('display') == 'block') {
-                $("button[class='btn btn-primary center-block']").show();
-            }
+            $("button[class='btn btn-primary center-block']").show();
+        });
+        $("input[data-module-name='iyzicocheckoutform']").click(function () {
+            $("button[class='btn btn-primary center-block']").hide();
         });
         $("input[id='conditions_to_approve[terms-and-conditions]']").change(function () {
             if (this.checked) {
                 $('#iyzipay-checkout-form').show();
                 $('#terms-error').hide();
-                if ($('#iyzipay-checkout-form').css('display') == 'block') {
-                    $("button[type=submit]").hide();
-                }
             } else {
                 $('#iyzipay-checkout-form').hide();
                 $('#terms-error').show();
             }
-
         });
     });
 </script>
