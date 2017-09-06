@@ -21,6 +21,15 @@
 {literal}
 <script>
     $(document).ready(function () {
+	$( "#checkout-payment-step > h1" ).click(function() {
+	$("#js-delivery").submit();
+	$('#iyzipay-checkout-form').hide();
+	$('#checkout-payment-step > div').hide();
+	
+});
+	
+	
+	
         $('#iyzipay-checkout-form').hide();
         $("input[name='payment-option']").click(function () {
             $("button[class='btn btn-primary center-block']").show();
