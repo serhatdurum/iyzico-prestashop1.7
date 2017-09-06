@@ -17,7 +17,7 @@ class Iyzicocheckoutform extends PaymentModule {
     public $address;
     public $extra_mail_vars;
     public $_prestashop = '_ps';
-    public $_ModuleVersion = '1.7.0.1';
+    public $_ModuleVersion = '1.7.0.2';
     protected $hooks = array(
         'payment',
         'backOfficeHeader',
@@ -28,7 +28,7 @@ class Iyzicocheckoutform extends PaymentModule {
     public function __construct() {
         $this->name = 'iyzicocheckoutform';
         $this->tab = 'payments_gateways';
-        $this->version = '1.7.0.1';
+        $this->version = '1.7.0.2';
         $this->author = 'KahveDigital';
         $this->controllers = array('payment', 'validation');
         $this->is_eu_compatible = 1;
@@ -262,19 +262,13 @@ class Iyzicocheckoutform extends PaymentModule {
             $product_ids_discount = array();
             $productsIds = array();
             $product_id_contain_discount = array();
-            $currency_arr = array('TRY', 'EUR', 'USD', 'GBP', 'IRR');
             $iso_code = $this->context->language->iso_code;
             $erorr_msg = ($iso_code == "tr") ? 'Girdiğiniz kur değeri sistem tarafından desteklenmemektedir. Lütfen kur değerinin TL, USD, EUR, GBP veya IRR olduğundan emin olunuz.' : 'The current exchange rate you entered is not supported by the system. Please use TRY, USD, EUR, GBP, IRR exchange rate.';
             $error_terms = ($iso_code == "tr") ? 'Şartlar ve koşulları kabul etmeniz gerekir.' : 'You must accept terms and conditions.';
             $this->smarty->assign(array(
                 'error_terms' => $error_terms,
             ));
-            if (!in_array(strtoupper($currency[0]['iso_code']), $currency_arr)) {
-                $this->smarty->assign(array(
-                    'currency_error' => $erorr_msg,
-                ));
-                return $this->display(__FILE__, 'payment.tpl');
-            }
+   
 
             IyzipayBootstrap::init();
             $options = new \Iyzipay\Options();
@@ -329,7 +323,7 @@ class Iyzicocheckoutform extends PaymentModule {
             $request->setLocale($locale);
             $request->setConversationId(uniqid() . $this->_prestashop);
             $request->setPaidPrice(number_format($order_amount, 2, '.', ''));
-            $request->setCurrency($this->getCurrencyConstant($currency[0]['iso_code']));
+            $request->setCurrency($currency[0]['iso_code']);
             $request->setBasketId($params['cookie']->id_cart);
             $request->setPaymentGroup(\Iyzipay\Model\PaymentGroup::PRODUCT);
             $request->setCallbackUrl((Configuration::get('PS_SSL_ENABLED') ? 'https://' : 'http://') . htmlspecialchars($_SERVER['HTTP_HOST'], ENT_COMPAT, 'UTF-8') . __PS_BASE_URI__ . 'index.php?module_action=result&fc=module&module=iyzicocheckoutform&controller=result');
@@ -812,26 +806,5 @@ class Iyzicocheckoutform extends PaymentModule {
         return $this->display(__FILE__, 'order_detail.tpl');
     }
 
-    private function getCurrencyConstant($currencyCode) {
-        $currency = \Iyzipay\Model\Currency::TL;
-        switch ($currencyCode) {
-            case "TRY":
-                $currency = \Iyzipay\Model\Currency::TL;
-                break;
-            case "USD":
-                $currency = \Iyzipay\Model\Currency::USD;
-                break;
-            case "GBP":
-                $currency = \Iyzipay\Model\Currency::GBP;
-                break;
-            case "EUR":
-                $currency = \Iyzipay\Model\Currency::EUR;
-                break;
-            case "IRR":
-                $currency = \Iyzipay\Model\Currency::IRR;
-                break;
-        }
-        return $currency;
-    }
 
 }
