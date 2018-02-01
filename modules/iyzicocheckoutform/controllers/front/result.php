@@ -26,8 +26,9 @@ class IyzicocheckoutformResultModuleFrontController extends ModuleFrontControlle
         $cart = $context->cart;
         $error_msg = '';
 
+
         try {
-            $token = $_POST['token'];
+            $token = Tools::getValue('token');
 
             if (empty($token)) {
                 $error_msg = ($language_iso_code == "tr") ? 'Güvenlik token bulunamadı' : 'Token not found.';
@@ -70,7 +71,7 @@ class IyzicocheckoutformResultModuleFrontController extends ModuleFrontControlle
                 throw new \Exception($response->getErrorMessage());
             }
 
-            $basket_id = $response->getBasketId();
+            $basket_id = pSQL($response->getBasketId());
 
             if ((int) $cart->id != $basket_id) {
                 $error_msg = ($language_iso_code == "tr") ? "Geçersiz istek" : "Invalid request";
@@ -91,6 +92,8 @@ class IyzicocheckoutformResultModuleFrontController extends ModuleFrontControlle
 
             $iyzico->validateOrder((int) $cart->id, Configuration::get('PS_OS_PAYMENT'), $cart_total, $iyzico->displayName, null, $total, (int) $currency->id, false, $cart->secure_key);
 	
+        $cart->id_customer = (int) $cart->id_customer;
+        
 		if (!empty($cart->id_customer)) { 
 		$cardcustomer = 'SELECT * FROM `' . _DB_PREFIX_ . 'iyzico_cart_save` WHERE `customer_id`= "' . $cart->id_customer . '"';
 			if ($row = Db::getInstance()->getRow($cardcustomer)){

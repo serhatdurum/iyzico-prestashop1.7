@@ -17,7 +17,7 @@ class Iyzicocheckoutform extends PaymentModule {
     public $address;
     public $extra_mail_vars;
     public $_prestashop = '_ps';
-    public $_ModuleVersion = '1.7.0.2';
+    public $_ModuleVersion = '1.7.0.3';
     protected $hooks = array(
         'payment',
         'backOfficeHeader',
@@ -160,9 +160,9 @@ class Iyzicocheckoutform extends PaymentModule {
         $test = $this->context->link->getAdminLink('AdminModules', true) . '&configure=' . $this->name . '&tab_module=' . $this->tab . '&module_name=' . $this->name;
         $this->context->smarty->assign('link', $test);
         if ($version == $response['iyzico_version']) {
-            if (isset($_GET['updated_iyzico'])) {
+            if (isset($_POST['updated_iyzico'])) {
 
-                $version_updatable = $_GET['updated_iyzico'];
+                $version_updatable = $_POST['updated_iyzico'];
 
                 function recurse_copy($src, $dst) {
                     $dir = opendir($src);
@@ -763,7 +763,7 @@ class Iyzicocheckoutform extends PaymentModule {
 
         $query = 'SELECT * FROM `' . _DB_PREFIX_ . 'iyzico_cart_detail` WHERE `order_id`= "' . $params['id_order'] . '" AND total_refunded_amount > 0';
         $refund_exist = Db::getInstance()->ExecuteS($query);
-
+        
         if (date('Y-m-d', strtotime($iyzico_installment_data['created'])) == date('Y-m-d')) {
             if (empty($refund_exist)) {
                 if ($order_state[0]['current_state'] != _PS_OS_CANCELED_) {
@@ -784,6 +784,7 @@ class Iyzicocheckoutform extends PaymentModule {
 
             $query = 'SELECT distinct pl.id_product,pl.name,ic.* FROM ' . _DB_PREFIX_ . 'iyzico_cart_detail ic LEFT JOIN ' . _DB_PREFIX_ . 'product_lang pl ON ic.item_id = pl.id_product WHERE ic.order_id = ' . $params['id_order'] . ' AND ic.paid_price != ic.total_refunded_amount';
             $order_detail = Db::getInstance()->ExecuteS($query);
+
             $this->smarty->assign('order_detail', $order_detail);
         }
 
@@ -793,7 +794,7 @@ class Iyzicocheckoutform extends PaymentModule {
 
         $form_action = (Configuration::get('PS_SSL_ENABLED') ? 'https://' : 'http://') . htmlspecialchars($_SERVER['HTTP_HOST'], ENT_COMPAT, 'UTF-8') . __PS_BASE_URI__ . 'modules/iyzicocheckoutform/cancel.php';
 
-        $error_msg = !empty($_GET['error']) ? $_GET['error'] : '';
+        $error_msg = !empty(Tools::getValue('error')) ? Tools::getValue('error') : '';
 
         $this->smarty->assign(array(
             'refund_url' => $refund_url,
@@ -802,6 +803,7 @@ class Iyzicocheckoutform extends PaymentModule {
             'ip' => (string) Tools::getRemoteAddr(),
             'form_action' => $form_action,
             'error' => $error_msg
+
         ));
         return $this->display(__FILE__, 'order_detail.tpl');
     }

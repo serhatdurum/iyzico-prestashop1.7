@@ -57,6 +57,7 @@
         <form name='cancelOrder' action='{$form_action}' method='post'>
             <input type='hidden' name='id_employee' value='{$id_employee}'/>
             <input type='hidden' name='transaction_id' value='{$transaction_id}'/>
+            <input type='hidden' name='token' value='{$token}'/>
             <label>{l s="Total amount" mod='iyzico'}:&nbsp;&nbsp;</label> {$currency} &nbsp;&nbsp;
             <input type='submit' name='cancel' value='Cancel Iyzico Order' class='btn btn-default'/>
         </form>
@@ -178,11 +179,12 @@
         var product_price = $("#product_price_" + id).val();
         var refunded = $("#refunded_" + id).val();
         var refund_limit = (product_price - refunded).toFixed(2);
+        var token        = "{{$token}}";
 
         $.ajax({
             url: "{$refund_url}",
             type: "POST",
-            data: "payment_id=" + payment_transaction_id + "&refund_price=" + refund_price + "&refunded=" + refunded,
+            data: "payment_id=" + payment_transaction_id + "&refund_price=" + refund_price + "&refunded=" + refunded+"&token="+token,
             success: function (result) {
                 var message = JSON.parse(result);
                 if (message['msg'] == 'Fail') {
