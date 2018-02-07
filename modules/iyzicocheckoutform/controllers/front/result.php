@@ -39,7 +39,7 @@ class IyzicocheckoutformResultModuleFrontController extends ModuleFrontControlle
             $options = new \Iyzipay\Options();
             $options->setApiKey(Configuration::get('IYZICO_FORM_LIVE_API_ID'));
             $options->setSecretKey(Configuration::get('IYZICO_FORM_LIVE_SECRET'));
-            $options->setBaseUrl("https://sandbox-api.iyzipay.com");
+            $options->setBaseUrl("https://api.iyzipay.com");
             
             $request = new \Iyzipay\Request\RetrieveCheckoutFormRequest();
             $request->setLocale($locale);
