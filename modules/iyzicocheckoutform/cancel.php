@@ -53,7 +53,7 @@ try {
     $options = new \Iyzipay\Options();
     $options->setApiKey(Configuration::get('IYZICO_FORM_LIVE_API_ID'));
     $options->setSecretKey(Configuration::get('IYZICO_FORM_LIVE_SECRET'));
-    $options->setBaseUrl("https://sandbox-api.iyzipay.com");
+    $options->setBaseUrl("https://api.iyzipay.com");
 
     //cancel order
     $transaction_id     = pSQL(Tools::getValue('transaction_id'));
