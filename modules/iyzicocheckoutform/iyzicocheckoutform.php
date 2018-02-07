@@ -17,7 +17,7 @@ class Iyzicocheckoutform extends PaymentModule {
     public $address;
     public $extra_mail_vars;
     public $_prestashop = '_ps';
-    public $_ModuleVersion = '1.7.0.3';
+    public $_ModuleVersion = '1.7.0.4';
     protected $hooks = array(
         'payment',
         'backOfficeHeader',
@@ -28,7 +28,7 @@ class Iyzicocheckoutform extends PaymentModule {
     public function __construct() {
         $this->name = 'iyzicocheckoutform';
         $this->tab = 'payments_gateways';
-        $this->version = '1.7.0.2';
+        $this->version = '1.7.0.4';
         $this->author = 'KahveDigital';
         $this->controllers = array('payment', 'validation');
         $this->is_eu_compatible = 1;
