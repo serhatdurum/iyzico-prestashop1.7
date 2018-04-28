@@ -90,7 +90,7 @@ class IyzicocheckoutformResultModuleFrontController extends ModuleFrontControlle
             $currency = new Currency((int) ($cart->id_currency));
             $iso_code = ($currency->iso_code) ? $currency->iso_code : '';
 
-            $iyzico->validateOrder((int) $cart->id, Configuration::get('PS_OS_PAYMENT'), $cart_total, $iyzico->displayName, null, $total, (int) $currency->id, false, $cart->secure_key);
+            $iyzico->validateOrder((int) $cart->id, Configuration::get('PS_OS_PAYMENT'), $cart_total, $iyzico->displayName, null, array(), (int) $currency->id, false, $cart->secure_key);
 	
         $cart->id_customer = (int) $cart->id_customer;
         
@@ -230,7 +230,7 @@ class IyzicocheckoutformResultModuleFrontController extends ModuleFrontControlle
                 'total' => $total,
                 'currency' => $iso_code,
             ));
-            $iyzico->validateOrder((int) $cart->id, Configuration::get('PS_OS_PAYMENT'), $cart_total, $iyzico->displayName, null, $total, (int) $currency->id, false, $cart->secure_key);
+            $iyzico->validateOrder((int) $cart->id, Configuration::get('PS_OS_PAYMENT'), $cart_total, $iyzico->displayName, null, array(), (int) $currency->id, false, $cart->secure_key);
               $this->setTemplate('module:iyzicocheckoutform/views/templates/front/order_result.tpl');
         }
     }
